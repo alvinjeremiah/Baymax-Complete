@@ -72,15 +72,73 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 	Camera.Parameters parameters;
 	Bitmap bmp;
 	TensorFlowClassifier classifier;
-	private TextView maxCalorie, consumedCalorie, burntCalorie, allowedCalorie, steps;
+	private TextView maxCalorie, consumedCalorie, burntCalorie, allowedCalorie, steps, weightchange;
 	private Button checkSafe, addFood, addExercise;
 	private DatabaseHelper databaseHelper;
 	private DatabaseHelper2 databaseHelper2;
 	private TextToSpeech textToSpeech;
 	private String MOB_NUMBER;
-	private String[] categorties = new String[]{"Whole Milk", "Paneer (Whole Milk)", "Butter", "Ghee", "Apple", "Banana", "Grapes", "Mango", "Musambi", "Orange", "Cooked Cereal", "Rice Cooked", "Chapatti", "Potato", "Dal", "Mixed Vegetables", "Fish", "Mutton", "Egg", "Biscuit (Sweet)", "Cake (Plain)", "Cake (Rich Chocolate)", "Dosa (Plain)", "Dosa (Masala)", "Pakoras", "Puri", "Samosa", "Vada (Medu)", "Biryani (Mutton)", "Biryani (Veg.)", "Curry (Chicken)", "Curry (Veg.)", "Fried Fish", "Pulav (Veg.)", "Carrot Halwa", "Jalebi", "Kheer", "Rasgulla"};
-	private int[] measure = new int[]{230, 60, 14, 15, 150, 60, 75, 100, 130, 130, 100, 25, 60, 150, 100, 150, 50, 30, 40, 15, 50, 50, 100, 100, 50, 40, 35, 40, 200, 200, 100, 100, 85, 100, 45, 20, 100, 50};
-	private int[] calories = new int[]{150, 150, 45, 45, 55, 55, 55, 55, 55, 55, 80, 80, 80, 80, 80, 80, 55, 75, 75, 70, 135, 225, 135, 250, 175, 85, 140, 70, 225, 200, 225, 130, 140, 130, 165, 100, 180, 140};
+	private String[] categorties  = new String[]{
+			"Whole Milk", "Paneer (Whole Milk)", "Butter", "Ghee", "Apple", "Banana",
+			"Grapes", "Mango", "Musambi", "Orange", "Cooked Cereal", "Rice Cooked",
+			"Chapatti", "Potato", "Dal", "Mixed Vegetables", "Fish", "Mutton", "Egg",
+			"Biscuit (Sweet)", "Cake (Plain)", "Cake (Rich Chocolate)", "Dosa (Plain)",
+			"Dosa (Masala)", "Pakoras", "Puri", "Samosa", "Vada (Medu)", "Biryani (Mutton)",
+			"Biryani (Veg.)", "Curry (Chicken)", "Curry (Veg.)", "Fried Fish", "Pulav (Veg.)",
+			"Carrot Halwa", "Jalebi", "Kheer", "Rasgulla",
+			// New food items
+			"White Bread", "Brown Bread", "Peanut Butter", "Jam", "Honey",
+			"Boiled Egg", "Scrambled Egg", "Omelette", "Pancakes", "Waffles",
+			"Cereal (with Milk)", "Granola Bar", "Yogurt (Low-fat)", "Cheese (Cheddar)",
+			"Cheese (Mozzarella)", "Cheese (Swiss)", "Chicken Breast (Skinless)",
+			"Chicken Thigh (Skinless)", "Turkey Breast (Skinless)", "Salmon (Wild)",
+			"Tuna (Canned in Water)", "Shrimp (Boiled)", "Crab", "Lobster",
+			"Pork Chop (Lean)", "Beef Steak (Lean)", "Ground Beef (Extra Lean)",
+			"Tofu", "Tempeh", "Quinoa (Cooked)", "Brown Rice (Cooked)",
+			"White Rice (Cooked)", "Pasta (Cooked)", "Sweet Potato (Baked)",
+			"Broccoli (Steamed)", "Spinach (Raw)", "Carrot (Raw)", "Tomato (Raw)",
+			"Cucumber (Raw)", "Avocado", "Almonds", "Walnuts",
+			"Peanuts (Dry Roasted)", "Cashews (Dry Roasted)", "Pistachios (Dry Roasted)",
+			"Sunflower Seeds", "Pumpkin Seeds", "Chia Seeds", "Flaxseeds",
+			"Greek Yogurt", "Milk (Skimmed)", "Milk (Soy)",
+			"Milk (Almond)", "Milk (Coconut)", "Orange Juice (Freshly Squeezed)",
+			"Apple Juice (Freshly Squeezed)", "Grapefruit Juice (Freshly Squeezed)",
+			"Cranberry Juice", "Green Tea", "Black Tea",
+			"Coffee (Black)", "Coffee (with Milk)", "Hot Chocolate",
+			"Soda (Regular)", "Soda (Diet)", "Beer",
+			"Wine (Red)", "Wine (White)", "Wine (Rosé)",
+			"Whiskey", "Vodka", "Rum",
+			"Tequila", "Gin", "Brandy",
+			"Cocktail (Margarita)", "Cocktail (Mojito)", "Cocktail (Cosmopolitan)",
+			"Cocktail (Pina Colada)", "Cocktail (Martini)", "Cocktail (Bloody Mary)"
+	};
+
+	private int[] measure = new int[]{
+			230, 60, 14, 15, 150, 60, 75, 100, 130, 130, 100, 25, 60, 150, 100, 150, 50, 30, 40, 15,
+			50, 50, 100, 100, 50, 40, 35, 40, 200, 200, 100, 100, 85, 100, 45, 20, 100, 50,
+			// Measures for new food items
+			25, 25, 16, 20, 20, 50, 50, 100, 100, 100, 200, 28, 170, 28, 28, 28,
+			100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+			100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+			100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+			100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+			100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+			100, 100, 100
+	};
+
+	private int[] calories = new int[]{
+			150, 150, 45, 45, 55, 55, 55, 55, 55, 55, 80, 80, 80, 80, 80, 80, 55, 75, 75, 70,
+			135, 225, 135, 250, 175, 85, 140, 70, 225, 200, 225, 130, 140, 130, 165, 100, 180, 140,
+			// Calories for new food items
+			70, 70, 94, 50, 60, 68, 100, 140, 330, 340, 120, 100, 100, 113, 85, 106,
+			165, 210, 180, 160, 100, 84, 101, 45, 148, 213, 184, 70, 122,
+			111, 86, 150, 112, 130, 124, 111, 100, 130, 156, 108, 130,
+			42, 0, 153, 200, 71, 170, 180, 100, 120, 150, 155, 100,
+			200, 250, 160, 96, 100, 120, 150, 50, 96, 100, 50,
+			65, 153, 100, 96, 127, 160, 150, 130, 140, 140, 200,
+			150, 110, 160, 145, 185, 200, 150
+	};
+
 	private DrawerLayout dl;
 	private ActionBarDrawerToggle t;
 	private NavigationView nv;
@@ -212,7 +270,7 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						startActivity(intent);
 						return true;
 					case R.id.feedback:
-						intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ashu12chi/HealthCastle"));
+						intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/alvinjeremiah"));
 						startActivity(intent);
 						return true;
 					case R.id.sugar:
@@ -255,6 +313,7 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 		checkSafe = findViewById(R.id.button);
 		addFood = findViewById(R.id.button2);
 		addExercise = findViewById(R.id.button4);
+		weightchange = findViewById(R.id.textView14);
 		databaseHelper = new DatabaseHelper(this);
 		Cursor res = databaseHelper.getAllData();
 		consumedCalorie.setText(loadPreferences("consumed"));
@@ -268,6 +327,11 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 			int y = Integer.parseInt(consumedCalorie.getText().toString());
 			allowedCalorie.setText(bmr1 + x - y + "");
 			saveTable2(bmr1 + x - y + "");
+			// Calculate Total Daily Energy Expenditure (TDEE)
+			double tdee = bmr + x;
+			double netCalories = tdee - (y - x);
+			double weightChange = netCalories / 3500;
+			weightchange.setText(String.format(Locale.ENGLISH, "%.2f", weightChange));
 		} else {
 			double bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
 			bmr = bmr * 1.2;
@@ -277,7 +341,16 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 			int y = Integer.parseInt(consumedCalorie.getText().toString());
 			allowedCalorie.setText(bmr1 + x - y + "");
 			saveTable2(bmr1 + x - y + "");
+			// Calculate Total Daily Energy Expenditure (TDEE)
+			double tdee = bmr + x;
+			double netCalories = tdee - (y - x);
+			double weightChange = netCalories / 3500;
+			weightchange.setText(String.format(Locale.ENGLISH, "%.2f", weightChange));
 		}
+
+
+
+
 		if (res.getCount() == 0) {
 			int size = categorties.length;
 			for (int i = 0; i < size; i++) {

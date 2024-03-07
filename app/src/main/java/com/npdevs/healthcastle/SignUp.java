@@ -141,7 +141,7 @@ public class SignUp extends AppCompatActivity {
 					password.requestFocus();
 					return;
 				}
-				if (s.isEmpty() || s.length() != 1) {
+				if (s.length() != 1) {
 					passLay.setError("Enter valid sex character!");
 					password.requestFocus();
 					return;
@@ -169,6 +169,7 @@ public class SignUp extends AppCompatActivity {
 					progressDialog.setMessage("Sending OTP...");
 					progressDialog.show();
 					sendVerificationCode();
+
 				}
 			}
 		});

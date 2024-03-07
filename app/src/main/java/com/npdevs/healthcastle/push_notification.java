@@ -35,7 +35,6 @@ public class push_notification extends IntentService {
 		super("push_notification");
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Log.e("NSP", "Reached Here by NSP");
